@@ -66,13 +66,13 @@ Easy. You need ``openssl``, the software is very popular and included in almost 
 
 How do I encrypt file?
 ```shell
-openssl enc -pbkdf2 -in secrets.ini -out secrets.dat
+openssl enc -aes128 -pbkdf2 -in secrets.ini -out secrets.dat
 ```
 Don't forget password that the tool will ask! If you forget it, you won't be able to get access to your secrets.
 
 How do I decrypt to check if everything okay?
 ```shell
-openssl enc -pbkdf2 -k <password> -d -in secrets.dat
+openssl enc -aes128 -pbkdf2 -d -in secrets.dat -pass pass:<password>
 ```
 
 ### How do I mention secret variables in my, for instance, Dockerfile?
