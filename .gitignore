@@ -1,0 +1,6 @@
+dist/
+venv/
+*.log
+.idea/
+.DS_Store
+Thumbs.db
