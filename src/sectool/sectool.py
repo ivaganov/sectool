@@ -8,7 +8,7 @@ def decrypt(secret_file, password):
     if secret_file.startswith("~"):
         secret_file = os.path.expanduser(secret_file)
     child = subprocess.Popen(
-        f'openssl enc -aes-256-cbc -k {password} -d -in {secret_file}',
+        f'openssl enc -pbkdf2 -k {password} -d -in {secret_file}',
         stdin=subprocess.PIPE, shell=True, stderr=subprocess.STDOUT, stdout=subprocess.PIPE)
     output = child.communicate()[0]
     output = output.decode('utf-8')
