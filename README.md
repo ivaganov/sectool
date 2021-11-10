@@ -20,25 +20,45 @@ deployment config, injects the corresponding values and print the result to stdo
 also ``xargs`` can help.
 
 ### Examples
+First of all, install ``sectool``:
+```shell
+python3 -m pip install sectool
+```
+And develop a shell code that calls sectool:
+```shell
+# The function has three arguments 
+# * path to encrypted file keeping secrets
+# * password for decrypting the file
+# * path to file where we need to merge variables
+merge() {
+read -r -d '' script <<-"----EOF"
+import os
+from sectool import process
+process(os.environ['SEC_FILE'], os.environ['PASS'], os.environ['TMPL_FILE'])
+----EOF
+SEC_FILE="$1" PASS="$2" TMPL_FILE="$3" python3 -c "$script"
+}
+```
+
 Inject to ``Dockerfile`` and build a Docker image:
 ```shell
 echo -n "Enter your password: "
 read PASSWORD
-python3.7 sectool.py secrets.dat $PASSWORD Dockerfile | docker build -t tulip -f - .
+merge "secrets.dat" $PASSWORD "Dockerfile" | docker build -t tulip -f - .
 ```
 
 Inject to ``docker-compose.yml`` and build all images mentioned there:
 ```shell
 echo -n "Enter your password: "
 read PASSWORD
-python3.7 sectool.py secrets.dat $PASSWORD docker-compose.yml | docker-compose -f - build
+merge "secrets.dat" $PASSWORD "docker-compose.yml" | docker-compose -f - build
 ```
 
 Inject to AWS Task Definition:
 ```shell
 echo -n "Enter your password: "
 read PASSWORD
-python3.7 sectool.py secrets.dat $PASSWORD my-aws-task-def.json | xargs -0 aws ecs register-task-definition --region eu-west-1 --cli-input-json
+merge "secrets.dat" $PASSWORD "my-aws-task-def.json" | xargs -0 aws ecs register-task-definition --region eu-west-1 --cli-input-json
 ```
 
 ### How do I encrypt .ini file?

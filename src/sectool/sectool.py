@@ -41,6 +41,14 @@ def merge_values(vars, template_file):
     return merged
 
 
+def process(secret_file, password, template_file):
+    output = decrypt(secret_file, password)
+    values = read_vars(output)
+    merged_content = merge_values(values, template_file)
+    for line in merged_content:
+        print(line, end='')
+
+
 def main(argv):
     if len(argv) == 3:
         secret_file = argv[0]
@@ -54,11 +62,7 @@ def main(argv):
         print("Usage: python sectool.py <secret_file> [password] <path_to_template_file>")
         sys.exit(2)
 
-    output = decrypt(secret_file, password)
-    values = read_vars(output)
-    merged_content = merge_values(values, template_file)
-    for line in merged_content:
-        print(line, end='')
+    process(secret_file, password, template_file)
 
 
 if __name__ == "__main__":
