@@ -11,7 +11,7 @@ plain text inside files like ``Dockerfile`` or ``docker-compose.yml`` which is n
 The tool solves the issue, it allows you to keep secrets in an encrypted file and inject the values
 during software builds.
 
-###How it works?
+### How it works?
 1. You create an .ini file where in section ``secrets`` you keep all your secrets.
 2. Encrypt the file. Later you can use the file (or files if you need different secrets for different environments).
 3. Run ``sectool`` by specifying the file and your deployment config file. The tool reads your 

@@ -1,17 +1,3 @@
-# How to encrypt and decrypt file?
-#   openssl enc -aes-256-cbc -in secrets.ini -out secrets.dat
-#   openssl enc -aes-256-cbc -k <password> -d -in secrets.dat
-# Examples to decrypt and use:
-#
-#   python3.7 sectool.py secrets.ini.gpg airdrop-fargate-aws-task-def.json | xargs -0 aws ecs register-task-definition --region eu-west-1 --cli-input-json
-#   python3.7 sectool.py secrets.ini.gpg docker-compose.yml | docker-compose -f - build
-#   python3.7 sectool.py secrets.ini.gpg Dockerfile | docker build -t tulip -f - .
-#
-# Enter password:
-#   echo -n "Enter your password: "
-#   read passvar
-#   python3.7 sectool.py secrets.ini.gpg $passvar Dockerfile
-
 import configparser
 import os
 import subprocess
